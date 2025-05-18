@@ -6,12 +6,13 @@
 #    By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 03:03:35 by svogrig           #+#    #+#              #
-#    Updated: 2025/03/23 21:36:31 by svogrig          ###   ########.fr        #
+#    Updated: 2025/05/18 16:23:29 by svogrig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	:=	programm
+NAME	:=	RPN
 
-SRC 	:=	main.cpp
+SRC 	:=	main.cpp \
+			RPN.cpp
 
 include ../ex00/Makefile
