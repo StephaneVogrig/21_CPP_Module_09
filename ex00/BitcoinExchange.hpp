@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:37:33 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/18 14:41:14 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/18 15:45:26 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ class BitcoinExchange
 		void loadDatabase(const std::string & filename);
 		void processDataLine(const std::string & line);
 		float getExchangeRate(const std::string & date) const;
-		Data strToData(const std::string & line, char separator);
-		bool isValideDate(const std::string & date);
-		std::string trim(const std::string & str);
+
+		static Data strToData(const std::string & line, char separator);
+		static bool isValideDate(const std::string & date);
+		static std::string trim(const std::string & str);
 
 	public:
 
