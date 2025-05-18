@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 15:39:25 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/18 16:54:12 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/18 17:57:50 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <string>
 # include <stdexcept>
 # include <cctype>
+# include <sstream>
+# include "shellColor.hpp"
 
 class RPN
 {
@@ -28,8 +30,7 @@ class RPN
 		~RPN();
 		RPN & operator = (const RPN & toAssign);
 
-		static bool isOperator(char c);
-		static void compute(std::stack<int> & stack, char operation);
+		static void compute(std::stack<int> & stack, std::string token);
 
 	public:
 
