@@ -6,17 +6,13 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:00 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/21 23:51:13 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/22 00:16:34 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
-#include "shellColor.hpp"
-#include <cmath>
-#include <iostream>
 #include "utils.hpp"
-#include <sstream>
-#include <algorithm>
+#include "shellColor.hpp"
 
 PmergeMe::PmergeMe()
 {}
@@ -36,16 +32,6 @@ PmergeMe & PmergeMe::operator = (const PmergeMe & toAssign)
 }
 
 /* -------------------------------------------------------------------------- */
-
-void swapVector(std::vector<int> & vector, int pos_a, int pos_b, int elementSize)
-{
-	for (int i = 0; i < elementSize; ++i)
-	{
-		int temp = vector[pos_a - i];
-		vector[pos_a - i] = vector[pos_b - i];
-		vector[pos_b - i] = temp;
-	}
-}
 
 void displayVectorByPair(std::string intro, std::vector<int> & vector, size_t elementSize)
 {
@@ -76,20 +62,25 @@ void displayVectorByPair(std::string intro, std::vector<int> & vector, size_t el
 	std::cout <<  RESET << std::endl;
 }
 
-void displayLevel(int recursLevel, size_t elementSize)
+void displayLevel(size_t elementSize)
 {
 	std::ostringstream oss;
-	oss << "sort level: " << recursLevel << " - elementSize: " << elementSize;
-	displaySection(std::string(oss.str()), FG_PURPLE);
+	oss << "sort - elementSize: " << elementSize;
+	displaySubtest(std::string(oss.str()), FG_PURPLE);
 }
 
-void PmergeMe::sort(std::vector<int> & vector, int recursLevel)
+void swapVector(t_vector::iterator ita, t_vector::iterator itb, int elementSize)
 {
-	size_t elementSize = pow(2, recursLevel);
+	for (int i = 0; i < elementSize; ++i)
+		std::swap(*(ita - i), *(itb - i));
+}
+
+void PmergeMe::sort(t_vector & vector, size_t elementSize)
+{
 	size_t nbrElement = vector.size() / elementSize;
 	if (nbrElement < 2)
 		return ;
-	displayLevel(recursLevel, elementSize);
+	displayLevel(elementSize);
 	displayVectorByPair(FG_PURPLE "to sort:", vector, elementSize);
 
 	size_t pairLength = elementSize * 2;
@@ -97,15 +88,15 @@ void PmergeMe::sort(std::vector<int> & vector, int recursLevel)
 	{
 		size_t ib = i - elementSize;
 		if (vector[i] < vector[ib])
-			swapVector(vector, i, ib, elementSize);
+			swapVector(vector.begin() + i, vector.begin() + ib, elementSize);
 	}
 
 	displayVectorByPair(FG_PURPLE "sorted :", vector, elementSize);
 	
-	sort(vector, recursLevel + 1);
+	sort(vector, elementSize * 2);
 	// size_t nbrPair = nbrElement / 2;
-	if (nbrElement < 3)
-		return ;
+	// if (nbrElement < 3)
+	// 	return ;
 	// t_vector main;
 	// // copy b1 in main
 	
@@ -115,9 +106,9 @@ void PmergeMe::sort(std::vector<int> & vector, int recursLevel)
 	
 }
 
-void PmergeMe::mergeInsertSort(std::vector<int> & vector)
+void PmergeMe::mergeInsertSort(t_vector & vector)
 {
-	sort(vector, 0);
+	sort(vector, 1);
 }
 
 void PmergeMe::mergeInsertSort(std::list<int> & list)

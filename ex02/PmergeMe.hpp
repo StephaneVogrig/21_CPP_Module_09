@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:06:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/21 23:12:39 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/22 00:16:40 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <vector>
 # include <list>
+# include <sstream>
+# include <algorithm>
+# include <iostream>
 
 typedef std::vector<int> t_vector;
 
@@ -27,7 +30,7 @@ class PmergeMe
 		~PmergeMe();
 		PmergeMe & operator = (const PmergeMe & toAssign);
 
-		static void sort(t_vector &vector, int recursLevel);
+		static void sort(t_vector &vector, size_t elementSize);
 		
 	public:
 
