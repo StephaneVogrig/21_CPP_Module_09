@@ -6,13 +6,14 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:00 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/22 03:20:24 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/22 18:55:43 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 #include "utils.hpp"
 #include "shellColor.hpp"
+#include "displayDebug.hpp"
 
 PmergeMe::PmergeMe()
 {}
@@ -33,75 +34,61 @@ PmergeMe & PmergeMe::operator = (const PmergeMe & toAssign)
 
 /* -------------------------------------------------------------------------- */
 
-void displayVectorByPair(std::string intro, std::vector<int> & vector, size_t elementSize)
+void insert()
 {
-	std::cout << intro;
 	
-	size_t i = 0;
-	bool isInPair = false;
-	for (i = 0; i < vector.size(); ++i)
-	{
-		bool startPair = i % (elementSize * 2) == 0;
-		if (startPair)
-			isInPair = vector.size() - i >= (elementSize * 2);
-		
-		if (i % elementSize == 0)
-		{
-			if (!isInPair)
-				std::cout << " " FG_PURPLE;
-			else if (startPair)
-				std::cout << " " FG_GREEN;
-			else
-				std::cout << FG_YELLOW;
-		}
-		if ((i + 1) % elementSize == 0 && isInPair)
-			std::cout << BOLD_ON << vector[i] << BOLD_OFF << ' ';
-		else
-			std::cout << vector[i] << ' ';
-	}
-	std::cout <<  RESET << std::endl;
 }
 
-void displayLevel(size_t elementSize)
+size_t jacob(size_t i)
 {
-	std::ostringstream oss;
-	oss << "sort - elementSize: " << elementSize;
-	displaySubtest(std::string(oss.str()), FG_PURPLE);
+	static size_t jacob_list[] = {0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485, 178956971, 357913941, 715827883, 1431655765};
+	if (i < 1 )
+		return 0;
+	else if (i >= sizeof(jacob_list) / sizeof(size_t))
+		throw std::runtime_error("Jacobsthal sequence return a number over an int");
+	return jacob_list[i] - jacob_list[i - 1];
 }
 
-void insertion(t_vector & vector, size_t elementSize)
+void insertion(t_vector & data, size_t elementSize)
 {
-	displayLevel(elementSize);
-	displayVectorByPair(FG_PURPLE "input  :", vector, elementSize);
-	size_t nbr_element = vector.size() / elementSize;
+	size_t nbr_element = data.size() / elementSize;
 	size_t main_nbr_element = 1 + nbr_element / 2;
 	size_t pend_nbr_element = nbr_element - main_nbr_element;
-	std::cout	<< "nbr_element: " << nbr_element << " main_nbr_element; " << main_nbr_element
-				<< " pend_nbr_element: " << pend_nbr_element << std::endl;
+	// size_t remain_nbr = data.size() - nbr_element * elementSize;
 
-	t_vector main(main_nbr_element * elementSize, 0);
-	t_vector::iterator it_last = std::copy(vector.begin(), vector.begin() + elementSize, main.begin()); // b1
-	(void)it_last;
+	displayLevel(elementSize);
+	displayVectorByPair(FG_PURPLE "input  :", data, elementSize);
+
+	t_vector main; // store index of element in data
+	main.push_back(elementSize - 1); // b1
 	for (size_t i = 1; i < nbr_element; i += 2) // a1, a2, ...
-	{
-		// std::cout << " i:" << i << std::flush;
-		t_vector::iterator start = vector.begin() + i * elementSize;
-		it_last = std::copy(start, start + elementSize, it_last);
-	}
-	// std::cout << std::endl;
-	displayVectorByPair(FG_PURPLE "main   :", main, elementSize);
+		main.push_back((i + 1) * elementSize - 1);
 
-	t_vector pend(pend_nbr_element * elementSize, 0);
-	it_last = pend.begin();
-	for (size_t i = 2; i < nbr_element; i += 2 ) // b2, b3, ...
-	{
-		// std::cout << "i:" << i << std::flush;
+	displayPendValue(FG_PURPLE "main   :", data, main);
 
-		t_vector::iterator start = vector.begin() + i * elementSize;
-		it_last = std::copy(start, start + elementSize, it_last);
+	t_vector pend; // store index of element in data
+	for (size_t i = 2; i < nbr_element; i += 2) // b2, b3, ...
+		pend.push_back((i + 1) * elementSize - 1);
+
+	displayPendValue(FG_PURPLE "pend   :", data, pend);
+	t_vector pend2;
+	size_t i_jacob = 3;
+	size_t i_previous = elementSize - 1;
+	while (pend_nbr_element)
+	{
+		size_t nbr_to_insert = jacob(i_jacob++);
+		if (nbr_to_insert > pend_nbr_element)
+			nbr_to_insert = pend_nbr_element;
+		for (size_t i = nbr_to_insert; i > 0; --i)
+		{
+			size_t idx_to_insert = i_previous + i * 2 * elementSize;
+			pend2.push_back(idx_to_insert);
+		}
+		i_previous += nbr_to_insert * 2 * elementSize;
+		pend_nbr_element -= nbr_to_insert;
 	}
-	// std::cout << std::endl;
-	displayVectorByPair(FG_PURPLE "pend   :", pend, elementSize);
+
+	displayPendValue(FG_PURPLE "pend2  :", data, pend2);
 }
 
 void swapVector(t_vector::iterator ita, t_vector::iterator itb, int elementSize)
@@ -127,7 +114,7 @@ void PmergeMe::sort(t_vector & vector, size_t elementSize)
 	}
 
 	displayVectorByPair(FG_PURPLE "sorted :", vector, elementSize);
-	
+
 	sort(vector, elementSize * 2);
 	if (nbrElement < 3)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:06:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/22 00:16:40 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/22 17:21:50 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sstream>
 # include <algorithm>
 # include <iostream>
+# include <exception>
 
 typedef std::vector<int> t_vector;
 
