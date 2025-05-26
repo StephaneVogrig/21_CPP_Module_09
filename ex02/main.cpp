@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:07 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/21 21:06:27 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/26 02:28:37 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 
 		std::vector<int> input;
 		argvToVector(argc, argv, input);
-		displayContainer(FG_YELLOW "input: " RESET, input);
+		// displayContainer(FG_YELLOW "input: " RESET, input);
 
 		// clock_t clockVector = timeToInsertMerge<std::vector<int> >(input);
 		clock_t start = clock();
