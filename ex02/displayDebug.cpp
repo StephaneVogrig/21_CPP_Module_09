@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:09:10 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/22 18:56:06 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/26 18:46:27 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void displayPendValue(const std::string & intro, const t_vector & data, const t_
 		std::cout  << " " << data[pend[i]];
 	std::cout << RESET << std::endl;
 }
-
 void displayVectorByPair(const std::string & intro, const t_vector & vector, size_t elementSize)
 {
 	std::cout << intro;
@@ -54,4 +53,12 @@ void displayLevel(size_t elementSize)
 	std::ostringstream oss;
 	oss << "sort - elementSize: " << elementSize;
 	displaySubtest(std::string(oss.str()), FG_PURPLE);
+}
+
+void displayVector(std::vector<int> & data)
+{
+	size_t i;
+	for (i = 0; i < data.size() - 1; ++i)
+		std::cout << data[i] << " ";
+	std::cout << data[i];
 }
