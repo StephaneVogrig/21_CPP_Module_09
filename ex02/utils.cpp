@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 04:51:07 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/21 21:06:46 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/27 22:56:17 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 		
 void argvToVector(int argc, char ** argv, std::vector<int> & input)
 {
+	std::cout << *argv << " " << std::flush;
 	argv++;
 	while (--argc)
 	{
+		std::cout << *argv << " " << std::flush;
 		char * endptr = NULL;
 		int value = strtol(*argv, &endptr, 10);
 		if (*endptr != '\0' || endptr == *argv || value < 1 || value > INT_MAX)
@@ -24,16 +26,17 @@ void argvToVector(int argc, char ** argv, std::vector<int> & input)
 		input.push_back(value);
 		argv++;
 	}
+	std::cout << std::endl;
 }
 
-void displayContainer(const std::string & str, std::vector<int> vector)
-{
-	std::cout << str;
-	size_t i;
-	for (i = 0; i < vector.size() - 1; ++i)
-		std::cout << vector[i] << " ";
-	std::cout << vector[i] << '\n';
-}
+// void displayContainer(const std::string & str, std::vector<int> vector)
+// {
+// 	std::cout << str;
+// 	size_t i;
+// 	for (i = 0; i < vector.size() - 1; ++i)
+// 		std::cout << vector[i] << " ";
+// 	std::cout << vector[i] << '\n';
+// }
 
 void displayTime(size_t size, const std::string & str, clock_t clock)
 {

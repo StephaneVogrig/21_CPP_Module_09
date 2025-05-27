@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 03:28:39 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/21 20:59:14 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/27 21:44:00 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ clock_t timeToInsertMerge(std::vector<int> input)
 	PmergeMe::mergeInsertSort(container);
 	return clock() - start;
 };
+
+template <typename T>
+void displayContainer(const std::string & str, T container)
+{
+	std::cout << str;
+	for (typename T::iterator it = container.begin(); it != container.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << '\n';
+	// size_t i;
+	// for (i = 0; i < container.size() - 1; ++i)
+	// 	std::cout << container[i] << " ";
+	// std::cout << container[i] << '\n';
+}
 
 void argvToVector(int argc, char ** argv, std::vector<int> & input);
 

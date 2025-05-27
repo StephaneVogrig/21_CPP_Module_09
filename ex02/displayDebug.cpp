@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:09:10 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/26 18:46:27 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/27 23:56:59 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void displayPendValue(const std::string & intro, const t_vector & data, const t_
 		std::cout  << " " << data[pend[i]];
 	std::cout << RESET << std::endl;
 }
-void displayVectorByPair(const std::string & intro, const t_vector & vector, size_t elementSize)
+
+void displayVectorByPair(const std::string & intro, const t_vector & vector, size_t element_size)
 {
 	std::cout << intro;
 	
@@ -27,11 +28,11 @@ void displayVectorByPair(const std::string & intro, const t_vector & vector, siz
 	bool is_in_pair = false;
 	for (i = 0; i < vector.size(); ++i)
 	{
-		bool start_pair = i % (elementSize * 2) == 0;
+		bool start_pair = i % (element_size * 2) == 0;
 		if (start_pair)
-			is_in_pair = vector.size() - i >= (elementSize * 2);
+			is_in_pair = vector.size() - i >= (element_size * 2);
 		
-		if (i % elementSize == 0)
+		if (i % element_size == 0)
 		{
 			if (!is_in_pair)
 				std::cout << " " FG_PURPLE;
@@ -40,18 +41,18 @@ void displayVectorByPair(const std::string & intro, const t_vector & vector, siz
 			else
 				std::cout << FG_YELLOW;
 		}
-		if ((i + 1) % elementSize == 0)
+		if ((i + 1) % element_size == 0)
 			std::cout << BOLD_ON << vector[i] << BOLD_OFF << ' ';
 		else
 			std::cout << vector[i] << ' ';
-	}
+	}	
 	std::cout <<  RESET << std::endl;
 }
 
-void displayLevel(size_t elementSize)
+void displayLevel(size_t element_size)
 {
 	std::ostringstream oss;
-	oss << "sort - elementSize: " << elementSize;
+	oss << "sort - element_size: " << element_size;
 	displaySubtest(std::string(oss.str()), FG_PURPLE);
 }
 

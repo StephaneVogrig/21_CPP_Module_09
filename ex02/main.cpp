@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:07 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/26 18:57:28 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/27 23:12:21 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int main(int argc, char ** argv)
 		if (argc < 2)
 			throw std::runtime_error("Error: Not enough arguments.\nUsage: ./PmergeMe <positive_integer_sequence>");
 
+		
 		std::vector<int> input;
 		argvToVector(argc, argv, input);
 		// displayContainer(FG_YELLOW "input: " RESET, input);
@@ -37,8 +38,9 @@ int main(int argc, char ** argv)
 		PmergeMe::mergeInsertSort(list);
 		clock_t clockList = clock() - start;
 		
-		displayContainer("Before: ", input);
-		displayContainer("After:  ", vector);
+		displayContainer<std::vector<int> >("Before: ", input);
+		displayContainer<std::vector<int> >("After:  ", vector);
+		displayContainer<std::list<int> >("After:  ", list);
 		displayTime(input.size(), "std::vector", clockVector);
 		displayTime(input.size(), "std::list  ", clockList);
 

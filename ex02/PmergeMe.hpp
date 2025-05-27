@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:06:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/26 23:05:12 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/27 23:29:47 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 typedef std::vector<int> t_vector;
 typedef std::list<int> t_list;
-typedef std::list<t_list::iterator> t_list_iter;
+typedef std::list<t_list> t_list_of_list;
 
 template <typename T>
 typename T::iterator listMoveIterator(typename T::iterator it, int nbr)
