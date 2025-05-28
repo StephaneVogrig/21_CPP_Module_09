@@ -6,7 +6,7 @@
 #    By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 03:03:35 by svogrig           #+#    #+#              #
-#    Updated: 2025/05/28 16:31:47 by svogrig          ###   ########.fr        #
+#    Updated: 2025/05/28 19:49:57 by svogrig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,6 @@ SRC 		?=	main.cpp \
 
 # objects ---------------------------------------------------------------------#
 
-# OBJ_DIR		:=	.build/
-# OBJ			:=	$(SRC:%.cpp=$(OBJ_DIR)%.o)
 OBJ_DIR_RELEASE :=  .build/release/
 OBJ_DIR_DEBUG   :=  .build/debug/
 OBJ_DIR			?=	$(OBJ_DIR_RELEASE)

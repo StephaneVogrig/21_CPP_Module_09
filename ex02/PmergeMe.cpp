@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:00 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 16:34:10 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 20:28:58 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,13 @@ static t_vector::iterator binarySearch(t_vector & main, int left, int right, int
 	return main.begin() + idx_insert;
 }
 
-static void insertion(t_vector & data, size_t nbr_element, size_t element_size)
+void PmergeMe::insertion(t_vector & data, size_t element_size)
 {
+	#ifdef DEBUG
+	displayByPair(FG_PURPLE "to insert:", data, element_size);
+	#endif
+
+	size_t nbr_element = data.size() / element_size;
 	size_t main_nbr_element = 1 + nbr_element / 2;
 	size_t pend_nbr_element = nbr_element - main_nbr_element;
 
@@ -108,7 +113,8 @@ static void insertion(t_vector & data, size_t nbr_element, size_t element_size)
 	}
 
 	#ifdef DEBUG
-	displayByPair(FG_PURPLE "insert :", data, element_size);
+	displayByPair(FG_PURPLE "inserted :", data, element_size);
+	std::cout << std::endl;
 	#endif
 }
 
@@ -118,12 +124,12 @@ static void swapVector(t_vector::iterator ita, t_vector::iterator itb, int eleme
 		std::swap(*ita--, *itb--);
 }
 
-void PmergeMe::sort(t_vector & data, size_t element_size)
+void PmergeMe::merge(t_vector & data, int element_size)
 {
-	size_t nbrElement = data.size() / element_size;
-	if (nbrElement < 2)
-		return ;
-
+	#ifdef DEBUG
+	displayByPair(FG_PURPLE "to merge:", data, element_size);
+	#endif
+	
 	size_t pairLength = element_size * 2;
 	for (size_t idx_second = pairLength - 1; idx_second < data.size(); idx_second += pairLength)
 	{
@@ -133,14 +139,9 @@ void PmergeMe::sort(t_vector & data, size_t element_size)
 	}
 
 	#ifdef DEBUG
-	displayByPair(FG_PURPLE "sorted :", data, element_size);
+	displayByPair(FG_PURPLE "merged  :", data, element_size);
+	std::cout << std::endl;
 	#endif
-
-	sort(data, element_size * 2);
-
-	if (nbrElement < 3)
-		return ;
-	insertion(data, nbrElement, element_size);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -163,14 +164,10 @@ static t_list_of_list::iterator binarySearch(t_list_of_list::iterator left, t_li
 		mid = left;
 		std::advance(mid, distance);
 		if (mid->back() > value)
-		{
 			right = mid;
-		}
 		else
-		{
-			++mid;
 			left = mid;
-		}
+		distance = std::distance(left, right);
 	}
 	return mid;
 }
@@ -196,6 +193,13 @@ static void splitDataToMainPendRemain(t_list & data, size_t element_size, t_list
 		extractElementFromData(data, element_size, pend);
 	}
 	remain.swap(data);
+	
+	#ifdef DEBUG
+	displayListList("main     :", main);
+	displayListList("pend     :", pend);
+	displayContainer(FG_PURPLE "remain   :" FG_BLUE, remain);
+	std::cout << RESET;
+	#endif
 }
 
 static void rebuildData(t_list & data, t_list_of_list & main, t_list & remain)
@@ -208,8 +212,12 @@ static void rebuildData(t_list & data, t_list_of_list & main, t_list & remain)
 	data.splice(data.end(), remain, remain.begin(), remain.end());
 }
 
-static void insertion(t_list & data, size_t element_size)
+void PmergeMe::insertion(t_list & data, size_t element_size)
 {
+	#ifdef DEBUG
+	displayByPair(FG_PURPLE "to insert:", data, element_size);
+	#endif
+
 	t_list_of_list main;
 	t_list_of_list pend;
 	t_list remain;
@@ -244,19 +252,22 @@ static void insertion(t_list & data, size_t element_size)
 	rebuildData(data, main, remain);
 
 	#ifdef DEBUG
-	displayByPair(FG_PURPLE "insert :", data, element_size);
+	displayByPair(FG_PURPLE "inserted :", data, element_size);
+	std::cout << std::endl;
 	#endif
 }
 
-void PmergeMe::sort(t_list & data, int element_size)
+void PmergeMe::merge(t_list & data, int element_size)
 {
-	int nbrElement = data.size() / element_size;
-	if (nbrElement < 2)
-		return ;
+	#ifdef DEBUG
+	displayByPair(FG_PURPLE "to merge:", data, element_size);
+	#endif
 
 	t_list::iterator a_start = data.begin();
 
-	int nbr_pair = nbrElement / 2;
+	int nbr_element = data.size() / element_size;
+	int nbr_pair = nbr_element / 2;
+	
 	for (int i = 0; i < nbr_pair; ++i)
 	{
 		t_list::iterator a_end = a_start;
@@ -278,11 +289,7 @@ void PmergeMe::sort(t_list & data, int element_size)
 	}
 
 	#ifdef DEBUG
-	displayByPair(FG_PURPLE "sorted :", data, element_size);
+	displayByPair(FG_PURPLE "merged  :", data, element_size);
+	std::cout << std::endl;
 	#endif
-	sort(data, element_size * 2);
-
-	if (nbrElement < 3)
-		return ;
-	insertion(data, element_size);
 }

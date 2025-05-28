@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 03:28:39 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 16:02:03 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 20:34:01 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void displayContainer(const std::string & str, const T container)
 {
 	std::cout << str;
 	for (typename T::const_iterator it = container.begin(); it != container.end(); ++it)
-		std::cout << *it << " ";
+		std::cout << " " << *it;
 	std::cout << '\n';
 }
 

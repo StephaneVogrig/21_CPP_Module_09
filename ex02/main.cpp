@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:07 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 16:35:20 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 19:59:53 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
 
 		#ifdef DEBUG
 		displayByPair(FG_PURPLE "input  :", input, 1);
-		std::cout << std::endl;
+		displaySubtest("mergeInsert a vector");
 		#endif
 
 		clock_t start = clock();
@@ -38,7 +38,7 @@ int main(int argc, char ** argv)
 		clock_t clockVector = clock() - start;
 
 		#ifdef DEBUG
-		std::cout << std::endl;
+		displaySubtest("mergeInsert a list");
 		#endif
 
 		start = clock();
@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
 		clock_t clockList = clock() - start;
 
 		#ifdef DEBUG
-		std::cout << std::endl;
+		displaySubtest("result");
 		#endif
 
 		displayContainer<std::vector<int> >("Before      : ", input);

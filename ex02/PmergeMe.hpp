@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:06:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 14:15:04 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 20:27:29 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,24 @@ class PmergeMe
 		~PmergeMe();
 		PmergeMe & operator = (const PmergeMe & to_assign);
 
-		static void sort(t_vector &data, size_t element_size);
-		static void sort(t_list &data, int element_size);
+		static void merge(t_vector & data, int element_size);
+		static void merge(t_list & data, int element_size);
+		static void insertion(t_vector & data, size_t element_size);
+		static void insertion(t_list & data, size_t element_size);
+		
+		template <typename T>
+		static void sort(T & data, int element_size)
+		{
+			int nbrElement = data.size() / element_size;
+			if (nbrElement < 2)
+				return ;
+		
+			merge(data, element_size);
+			sort(data, element_size * 2);
+			if (nbrElement < 3)
+				return ;
+			insertion(data, element_size);
+		}
 		
 	public:
 
