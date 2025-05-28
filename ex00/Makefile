@@ -6,11 +6,12 @@
 #    By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 03:03:35 by svogrig           #+#    #+#              #
-#    Updated: 2025/05/17 18:58:18 by svogrig          ###   ########.fr        #
+#    Updated: 2025/05/28 16:31:47 by svogrig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		?=	btc
+DEBUG_NAME	:=	$(NAME)_debug
 
 # sources ---------------------------------------------------------------------#
 
@@ -19,27 +20,32 @@ SRC 		?=	main.cpp \
 
 # objects ---------------------------------------------------------------------#
 
-OBJ_DIR		:=	.build/
-OBJ			:=	$(SRC:%.cpp=$(OBJ_DIR)%.o)
+# OBJ_DIR		:=	.build/
+# OBJ			:=	$(SRC:%.cpp=$(OBJ_DIR)%.o)
+OBJ_DIR_RELEASE :=  .build/release/
+OBJ_DIR_DEBUG   :=  .build/debug/
+OBJ_DIR			?=	$(OBJ_DIR_RELEASE)
+OBJ				:=	$(SRC:%.cpp=$(OBJ_DIR)%.o)
 
-DEPS		:=	$(OBJ:.o=.d)
+DEPS			:=	$(OBJ:.o=.d)
 
 # compilation -----------------------------------------------------------------#
 
 CXX			:=	c++
-CXXFLAGS	:=	-Wall -Wextra -Werror -std=c++98 -g
-
+CXXFLAGS	:=	-Wall -Wextra -Werror
+DEBUGFLAGS	:=	-DDEBUG -std=c++98 -g
 #------------------------------------------------------------------------------#
 # rules                                                                        #
 #------------------------------------------------------------------------------#
 
-all: $(NAME)
+all:
+	@$(MAKE) -j makeall --no-print-directory
 
 clean:
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR_RELEASE) $(OBJ_DIR_DEBUG)
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -rf $(NAME) $(DEBUG_NAME)
 
 re: fclean all
 
@@ -48,13 +54,23 @@ test:
 	./$(NAME)
 	@rm $(NAME)
 
+makeall: $(NAME)
+
+debug:
+	@$(MAKE) -j all --no-print-directory NAME=$(DEBUG_NAME) OBJ_DIR=$(OBJ_DIR_DEBUG)
+
 #------------------------------------------------------------------------------#
 # compilation                                                                  #
 #------------------------------------------------------------------------------#
 
-$(OBJ_DIR)%.o: %.cpp
+$(OBJ_DIR_RELEASE)%.o: %.cpp
 	@mkdir -p $(dir $@)
 	@$(CXX) $(CXXFLAGS) -MMD -c $< -o $@
+	@echo "compiled $<"
+
+$(OBJ_DIR_DEBUG)%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@$(CXX) $(CXXFLAGS) $(DEBUGFLAGS) -MMD -c $< -o $@
 	@echo "compiled $<"
 
 -include $(DEPS)
@@ -74,4 +90,5 @@ $(NAME): $(OBJ)
 .PHONY: all \
 		clean \
 		fclean \
-		re
+		re \
+		debug
