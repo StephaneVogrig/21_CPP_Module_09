@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:00 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 20:28:58 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 22:21:56 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,32 @@ static t_vector::iterator binarySearch(t_vector & main, int left, int right, int
 	return main.begin() + idx_insert;
 }
 
+static void fillMainWithDataIndex(t_vector & main, t_vector & data, size_t element_size)
+{
+	size_t nbr_element = data.size() / element_size;
+	main.push_back(element_size - 1);
+	for (size_t i = 1; i < nbr_element; i += 2)
+		main.push_back((i + 1) * element_size - 1);
+
+	#ifdef DEBUG
+	displayVectorIndex(FG_PURPLE "main     :", data, main);
+	std::cout << RESET;
+	#endif
+}
+
+static void rebuildData(t_vector & main, t_vector & data, size_t element_size)
+{
+	t_vector tmp(data);
+	t_vector::iterator result = data.begin();
+	for (size_t i = 0; i < main.size(); ++i)
+	{
+		t_vector::iterator last = tmp.begin() + main[i] + 1;
+		t_vector::iterator first = last - element_size;
+		std::copy(first, last, result);
+		result += element_size;
+	}
+}
+
 void PmergeMe::insertion(t_vector & data, size_t element_size)
 {
 	#ifdef DEBUG
@@ -74,13 +100,10 @@ void PmergeMe::insertion(t_vector & data, size_t element_size)
 	#endif
 
 	size_t nbr_element = data.size() / element_size;
-	size_t main_nbr_element = 1 + nbr_element / 2;
-	size_t pend_nbr_element = nbr_element - main_nbr_element;
 
 	t_vector main;
-	main.push_back(element_size - 1);
-	for (size_t i = 1; i < nbr_element; i += 2)
-		main.push_back((i + 1) * element_size - 1);
+	fillMainWithDataIndex(main, data, element_size);
+	size_t pend_nbr_element = nbr_element - main.size();
 
 	size_t i_jacob = 3;
 	size_t idx_start = element_size - 1;
@@ -102,15 +125,7 @@ void PmergeMe::insertion(t_vector & data, size_t element_size)
 		pend_nbr_element -= nbr_to_insert;
 	}
 
-	t_vector tmp(data);
-	t_vector::iterator result = data.begin();
-	for (size_t i = 0; i < main.size(); ++i)
-	{
-		t_vector::iterator last = tmp.begin() + main[i] + 1;
-		t_vector::iterator first = last - element_size;
-		std::copy(first, last, result);
-		result += element_size;
-	}
+	rebuildData(main, data, element_size);
 
 	#ifdef DEBUG
 	displayByPair(FG_PURPLE "inserted :", data, element_size);

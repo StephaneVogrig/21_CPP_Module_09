@@ -6,13 +6,13 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:09:10 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 16:18:38 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 21:33:36 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "displayDebug.hpp"
 
-void displayPendValue(const std::string & intro, const t_vector & data, const t_vector &pend)
+void displayVectorIndex(const std::string & intro, const t_vector & data, const t_vector &pend)
 {
 	std::cout << intro << FG_BLUE;
 	for (size_t i = 0; i < pend.size(); ++i)

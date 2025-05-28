@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:06:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 20:27:29 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 21:19:47 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,15 @@ class PmergeMe
 		static void insertion(t_list & data, size_t element_size);
 		
 		template <typename T>
-		static void sort(T & data, int element_size)
-		{
-			int nbrElement = data.size() / element_size;
-			if (nbrElement < 2)
-				return ;
-		
-			merge(data, element_size);
-			sort(data, element_size * 2);
-			if (nbrElement < 3)
-				return ;
-			insertion(data, element_size);
-		}
+		static void sort(T & data, int element_size);
 		
 	public:
 
 		template <typename T>
-		static void mergeInsertSort(T & data)
-		{
-			sort(data, 1);
-		}
+		static void mergeInsertSort(T & data);
+
 };
+
+# include "PmergeMe.tpp"
 
 #endif
