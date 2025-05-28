@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:08:17 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 01:19:03 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 04:32:47 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void displayByPair(const std::string & intro, const T & data, size_t element_siz
 void displayPendValue(const std::string & intro, const t_vector & data, const t_vector &pend);
 void displayLevel(size_t element_size);
 void displayVector(std::vector<int> & data);
+void displayListList(const std::string & intro, const t_list_of_list & list);
 
 #endif

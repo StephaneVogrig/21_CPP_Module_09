@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:09:10 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/28 01:19:09 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 04:32:32 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,12 @@ void displayVector(std::vector<int> & data)
 	for (i = 0; i < data.size() - 1; ++i)
 		std::cout << data[i] << " ";
 	std::cout << data[i];
+}
+
+void displayListList(const std::string & intro, const t_list_of_list & list)
+{
+	std::cout << FG_PURPLE << intro << FG_BLUE;
+	for (t_list_of_list::const_iterator it = list.begin(); it != list.end(); ++it)
+		std::cout << " " << it->back();
+	std::cout << std::endl;
 }
