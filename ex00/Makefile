@@ -6,7 +6,7 @@
 #    By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/22 03:03:35 by svogrig           #+#    #+#              #
-#    Updated: 2025/05/28 19:49:57 by svogrig          ###   ########.fr        #
+#    Updated: 2025/05/28 22:43:24 by svogrig          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,11 @@ SRC 		?=	main.cpp \
 
 # objects ---------------------------------------------------------------------#
 
-OBJ_DIR_RELEASE :=  .build/release/
-OBJ_DIR_DEBUG   :=  .build/debug/
-OBJ_DIR			?=	$(OBJ_DIR_RELEASE)
-OBJ				:=	$(SRC:%.cpp=$(OBJ_DIR)%.o)
+OBJ_DIR			:=	.build
+OBJ_DIR_RELEASE :=  $(OBJ_DIR)/release/
+OBJ_DIR_DEBUG   :=  $(OBJ_DIR)/debug/
+OBJ_DIR_USE			?=	$(OBJ_DIR_RELEASE)
+OBJ				:=	$(SRC:%.cpp=$(OBJ_DIR_USE)%.o)
 
 DEPS			:=	$(OBJ:.o=.d)
 
@@ -40,7 +41,7 @@ all:
 	@$(MAKE) -j makeall --no-print-directory
 
 clean:
-	@rm -rf $(OBJ_DIR_RELEASE) $(OBJ_DIR_DEBUG)
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@rm -rf $(NAME) $(DEBUG_NAME)
@@ -55,7 +56,7 @@ test:
 makeall: $(NAME)
 
 debug:
-	@$(MAKE) -j all --no-print-directory NAME=$(DEBUG_NAME) OBJ_DIR=$(OBJ_DIR_DEBUG)
+	@$(MAKE) -j all --no-print-directory NAME=$(DEBUG_NAME) OBJ_DIR_USE=$(OBJ_DIR_DEBUG)
 
 #------------------------------------------------------------------------------#
 # compilation                                                                  #
