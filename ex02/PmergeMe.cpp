@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 02:04:00 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/27 23:29:47 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 02:49:01 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ PmergeMe & PmergeMe::operator = (const PmergeMe & to_assign)
 
 /* -------------------------------------------------------------------------- */
 
+size_t jacobsthal(size_t i)
+{
+	static size_t jacob_list[] = {0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485, 178956971, 357913941, 715827883, 1431655765};
+	if (i < 1 )
+		return 0;
+	else if (i >= sizeof(jacob_list) / sizeof(size_t))
+		throw std::runtime_error("Jacobsthal sequence return a number over an int");
+	return jacob_list[i] - jacob_list[i - 1];
+}
+
 t_vector::iterator binarySearch(t_vector & main, int left, int right, int value, const t_vector & data)
 {
 	int idx_insert = 0;
@@ -55,69 +65,15 @@ t_vector::iterator binarySearch(t_vector & main, int left, int right, int value,
 	return main.begin() + idx_insert;
 }
 
-t_list_of_list::iterator binarySearch(t_list_of_list::iterator left, t_list_of_list::iterator right, int value)
-{
-	// std::cout << FG_PURPLE "binary search for " FG_BLUE << value << "\n" RESET;
-	t_list_of_list::difference_type count = std::distance(left, right);
-	t_list_of_list::iterator result = left;
-	while (count > 0)
-	{
-		// std::cout << FG_PURPLE "***\nbinary search for " FG_BLUE << value << "\n" RESET;
-		// std::cout << FG_PURPLE "left: " FG_BLUE << left->back() << FG_PURPLE " - right: " FG_BLUE << right->back() << RESET << std::endl;
-		// std::cout << FG_PURPLE "count " FG_BLUE << count << "\n" RESET;
-		
-		t_list_of_list::difference_type step = count / 2;
-		t_list_of_list::iterator mid = left;
-		std::advance(mid, step);
-		// std::cout << "mid: " << mid->back() << std::endl;
-		if (mid->back() > value)
-		{
-			right = mid;
-		}
-		else
-		{
-			++mid;
-			left = mid;
-		}
-		result = mid;
-		count = step;
-	}
-	// std::cout << FG_PURPLE "result; " FG_BLUE << result->back() << RESET << std::endl;
-	return result;
-}
-
-size_t jacobsthal(size_t i)
-{
-	static size_t jacob_list[] = {0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485, 178956971, 357913941, 715827883, 1431655765};
-	if (i < 1 )
-		return 0;
-	else if (i >= sizeof(jacob_list) / sizeof(size_t))
-		throw std::runtime_error("Jacobsthal sequence return a number over an int");
-	return jacob_list[i] - jacob_list[i - 1];
-}
-
 void insertion(t_vector & data, size_t nbr_element, size_t element_size)
 {
-	// size_t nbr_element = data.size() / element_size;
 	size_t main_nbr_element = 1 + nbr_element / 2;
 	size_t pend_nbr_element = nbr_element - main_nbr_element;
-	// size_t remain_nbr = data.size() - nbr_element * element_size;
-
-	// displayLevel(element_size);
-	// displayVectorByPair(FG_PURPLE "input  :", data, element_size);
 
 	t_vector main; // store index of first lowest and all bigest element from data
 	main.push_back(element_size - 1); // add b1
 	for (size_t i = 1; i < nbr_element; i += 2) // add a1, a2, ...
 		main.push_back((i + 1) * element_size - 1);
-
-	// displayPendValue(FG_PURPLE "main   :", data, main);
-
-	// t_vector pend; // store index of element in data
-	// for (size_t i = 2; i < nbr_element; i += 2) // b2, b3, ...
-	// 	pend.push_back((i + 1) * element_size - 1);
-	// displayPendValue(FG_PURPLE "pend   :", data, pend);
-	// t_vector pend2;
 
 	// in main, insert index of lowest element from data
 	size_t i_jacob = 3;
@@ -135,35 +91,23 @@ void insertion(t_vector & data, size_t nbr_element, size_t element_size)
 		for (size_t i = nbr_to_insert; i > 0; --i)
 		{
 			size_t idx_to_insert = idx_start + i * 2 * element_size;
-			// insert(data, idx_to_insert, main, idx_bound - 1);
-
 			main.insert(binarySearch(main, 0, idx_bound - 1, data[idx_to_insert], data), idx_to_insert);
-			// pend2.push_back(idx_to_insert);
 		}
 		idx_start += nbr_to_insert * 2 * element_size;
 		pend_nbr_element -= nbr_to_insert;
 	}
 
-	// displayPendValue(FG_PURPLE "pend2  :", data, pend2);
-
 	t_vector tmp(data);
-	// displayVectorByPair(FG_PURPLE "tmp  :", tmp, element_size);
-	// std::cout << std::endl;
 
 	t_vector::iterator result = data.begin();
 	for (size_t i = 0; i < main.size(); ++i)
 	{
-		// std::cout << "i: " << i << " main[i]:" << main[i];
 		t_vector::iterator last = tmp.begin() + main[i] + 1;
 		t_vector::iterator first = last - (element_size);
-		// std::cout << " first:" << *first << " last:" << *last << " result:" << *result << std::endl;
 		std::copy(first, last, result);
-	// displayVectorByPair(FG_PURPLE "data  :", data, element_size);
 		result += element_size;
 	}
-	// std::cout << std::endl;
-	// PmergeMe::displayVector(data);
-	// std::cout << std::endl;
+	// displayByPair(FG_PURPLE "insert :", data, element_size);
 }
 
 void swapVector(t_vector::iterator ita, t_vector::iterator itb, int element_size)
@@ -177,8 +121,6 @@ void PmergeMe::sort(t_vector & data, size_t element_size)
 	size_t nbrElement = data.size() / element_size;
 	if (nbrElement < 2)
 		return ;
-	// displayLevel(element_size);
-	// displayVectorByPair(FG_PURPLE "to sort:", data, element_size);
 
 	size_t pairLength = element_size * 2;
 	for (size_t idx_second = pairLength - 1; idx_second < data.size(); idx_second += pairLength)
@@ -188,7 +130,7 @@ void PmergeMe::sort(t_vector & data, size_t element_size)
 			swapVector(data.begin() + idx_second, data.begin() + idx_first, element_size);
 	}
 
-	// displayVectorByPair(FG_PURPLE "sorted :", data, element_size);
+	// displayByPair(FG_PURPLE "sorted :", data, element_size);
 
 	sort(data, element_size * 2);
 
@@ -196,28 +138,6 @@ void PmergeMe::sort(t_vector & data, size_t element_size)
 		return ;
 	insertion(data, nbrElement, element_size);
 }
-
-
-// t_list::iterator listMoveIterator(t_list::iterator it, int nbr)
-// {
-// 	if (nbr > 0)
-// 		while (nbr--)
-// 			it++;
-// 	else
-// 		while (nbr++)
-// 			it--;
-// 	return it;
-// }
-
-
-// void display(const std::string & intro, const t_list_of_list & list)
-// {
-// 	std::cout << FG_PURPLE << intro << FG_BLUE;
-// 	for (t_list_of_list::const_iterator it = list.begin(); it != list.end(); ++it)
-// 		std::cout << " " << *(*it);
-// 	std::cout << std::endl;
-// }
-
 
 void display(const std::string & intro, const t_list_of_list & list)
 {
@@ -227,6 +147,30 @@ void display(const std::string & intro, const t_list_of_list & list)
 	std::cout << std::endl;
 }
 
+t_list_of_list::iterator binarySearch(t_list_of_list::iterator left, t_list_of_list::iterator right, int value)
+{
+	t_list_of_list::difference_type count = std::distance(left, right);
+	t_list_of_list::iterator result = left;
+	while (count > 0)
+	{
+		t_list_of_list::difference_type step = count / 2;
+		t_list_of_list::iterator mid = left;
+		std::advance(mid, step);
+		if (mid->back() > value)
+		{
+			right = mid;
+		}
+		else
+		{
+			++mid;
+			left = mid;
+		}
+		result = mid;
+		count = step;
+	}
+	return result;
+}
+
 void extract_element_from_data(t_list & data, size_t element_size, t_list & destination)
 {
 	t_list::iterator it = data.begin();
@@ -234,69 +178,49 @@ void extract_element_from_data(t_list & data, size_t element_size, t_list & dest
 	destination.splice(destination.begin(), data, data.begin(), it);
 }
 
-void insertion(t_list & data, size_t nbr_element, size_t element_size)
+void fill_main_pend(t_list_of_list & main, t_list_of_list & pend, t_list & data, size_t element_size)
 {
-	(void)data;
-	(void)nbr_element;
-	(void)element_size;
-	// size_t main_nbr_element = 1 + nbr_element / 2;
-	// size_t pend_nbr_element = nbr_element - main_nbr_element;
-
-	// displayLevel(element_size);
-	// displayByPair(FG_PURPLE "sorted :", data, element_size);
-	// std::cout << FG_PURPLE "nbr_element: " FG_BLUE << nbr_element << FG_PURPLE "\nmain_nbr_element: " FG_BLUE << main_nbr_element << FG_PURPLE "\npend_nbr_element: " FG_BLUE << pend_nbr_element << RESET << std::endl;
-	
-	t_list_of_list main; // store itrator of first lowest and all bigest element from data
-	t_list_of_list pend; // store itrator of lowest element from data except the first
+	size_t nbr_element = data.size() / element_size;
 	main.push_back(t_list());
 	extract_element_from_data(data, element_size, main.back());
-	// displayByPair(FG_PURPLE "del_b1 :", data, element_size);
 	for (size_t i = 1; i < nbr_element; ++i)
 	{
 		main.push_back(t_list());
 		extract_element_from_data(data, element_size, main.back());
-		// displayByPair(FG_PURPLE "del_a :", data, element_size);
 		if (++i >= nbr_element)
 			break;
 		pend.push_back(t_list());
 		extract_element_from_data(data, element_size, pend.back());
-		// displayByPair(FG_PURPLE "del_b :", data, element_size);
 	}
+}
+
+void insertion(t_list & data, size_t element_size)
+{
+	t_list_of_list main;
+	t_list_of_list pend;
+	fill_main_pend(main, pend, data, element_size);
+	
 	t_list remain;
 	remain.swap(data);
-	// display(FG_PURPLE "main  :", main);
-	// display(FG_PURPLE "pend  :", pend);
-	// displayContainer(FG_PURPLE "remain:", remain);
-	// displayByPair(FG_PURPLE "data :", data, element_size);
 
 
-	
 	// in main, insert index of lowest element from data
 	size_t i_jacob = 3;
 	size_t search_range = 1;
 	while (pend.size() > 0)
 	{
-		
-		// std::cout << "==============================================" << std::endl;
 		size_t nbr_to_insert = jacobsthal(i_jacob++);
 		if (nbr_to_insert > pend.size())
 			nbr_to_insert = pend.size();
-		// std::cout << "nbr_to_insert: " << nbr_to_insert << std::endl;
 
 		search_range = (search_range + 1) * 2 - 1;
 		if (search_range > main.size())
 			search_range = main.size();
-		// std::cout << "search_range: " << search_range << std::endl;
 
-		
 		for (size_t i = nbr_to_insert; i > 0; --i)
 		{
-			// std::cout << "-----------------------------------------" << std::endl;
-			// std::cout << "nbr_to_insert: " << nbr_to_insert << std::endl;
-			
 			t_list_of_list::iterator it_pend = pend.begin();
 			std::advance(it_pend, nbr_to_insert - 1);
-			// std::cout << "it_pend: " << it_pend->back() << std::endl;
 
 			// insert
 			t_list_of_list::iterator right = main.begin();
@@ -304,12 +228,10 @@ void insertion(t_list & data, size_t nbr_element, size_t element_size)
 
 			t_list_of_list::iterator main_it_to_insert = binarySearch(main.begin(), right, it_pend->back());
 			main.splice(main_it_to_insert, pend, it_pend);
-
-			// display(FG_PURPLE "main :", main);
-			// display(FG_PURPLE "pend :", pend);
 			--nbr_to_insert;
 		}
 	}
+	
 	while (main.size())
 	{
 		data.splice(data.end(), main.front(), main.front().begin(), main.front().end());
@@ -317,7 +239,7 @@ void insertion(t_list & data, size_t nbr_element, size_t element_size)
 	}
 	data.splice(data.end(), remain, remain.begin(), remain.end());
 	
-	// displayByPair(FG_PURPLE "data :", data, element_size);
+	// displayByPair(FG_PURPLE "insert :", data, element_size);
 }
 
 void PmergeMe::sort(t_list & data, int element_size)
@@ -325,42 +247,28 @@ void PmergeMe::sort(t_list & data, int element_size)
 	int nbrElement = data.size() / element_size;
 	if (nbrElement < 2)
 		return ;
-		
-	// displayLevel(element_size);
-	// displayByPair(FG_PURPLE "to sort:", data, element_size);
-	
-	std::pair<t_list::iterator, t_list::iterator> it_elem_first;
-	std::pair<t_list::iterator, t_list::iterator> it_elem_second;
-	it_elem_first.first = data.begin();
-	
-	// int pairLength = element_size * 2;
+
+	t_list::iterator a_start = data.begin();
+
 	int nbr_pair = nbrElement / 2;
 	for (int i = 0; i < nbr_pair; ++i)
 	{
-		it_elem_first.second = it_elem_first.first;
-		std::advance(it_elem_first.second, element_size - 1);
-		it_elem_second.first = it_elem_first.second;
-		it_elem_second.first++;
-		it_elem_second.second = it_elem_second.first;
-		std::advance(it_elem_second.second, element_size - 1);
+		t_list::iterator a_end = a_start;
+		std::advance(a_end, element_size - 1);
 		
-		// std::cout << "elem first first:" << *it_elem_first.first << " second:" << *it_elem_first.second << " elem second first:" << *it_elem_second.first << " second:" << *it_elem_second.second << std::endl;
+		t_list::iterator b_start = a_end;
+		++b_start;
 		
-		if (*it_elem_second.second < *it_elem_first.second)
+		t_list::iterator b_end = b_start;
+		std::advance(b_end, element_size - 1);
+		
+		if (*b_end < *a_end)
 		{
-			// ++it_elem_second.second;
-			// std::cout << FG_YELLOW "swap " RESET << *it_elem_first.first << FG_YELLOW " to " RESET << *it_elem_first.second << FG_YELLOW " with " RESET << *it_elem_second.first << FG_YELLOW" to " RESET << *it_elem_second.second << std::endl;
-			data.splice(it_elem_first.first, data, it_elem_second.first, ++it_elem_second.second);
-			std::advance(it_elem_first.first, element_size);
+			data.splice(a_start, data, b_start, ++b_end);
+			a_start = ++a_end;
 		}
 		else
-		{
-			// std::cout << "it_elem_first.first: " << *it_elem_first.first;
-			std::advance(it_elem_first.first, element_size * 2);
-			// std::cout << " after add paeirlenght -1, it_elem_first.first: " << *it_elem_first.first << std::endl;
-		}
-		
-		// displayByPair(FG_PURPLE "sorted :", data, element_size);
+			a_start = ++b_end;
 	}
 
 	// displayByPair(FG_PURPLE "sorted :", data, element_size);
@@ -369,15 +277,17 @@ void PmergeMe::sort(t_list & data, int element_size)
 
 	if (nbrElement < 3)
 		return ;
-	insertion(data, nbrElement, element_size);
+	insertion(data, element_size);
 }
 
 void PmergeMe::mergeInsertSort(t_vector & data)
 {
+	// displayByPair(FG_PURPLE "to sort:", data, 1);
 	sort(data, 1);
 }
 
 void PmergeMe::mergeInsertSort(t_list & data)
 {
+	// displayByPair(FG_PURPLE "to sort:", data, 1);
 	sort(data, 1);
 }

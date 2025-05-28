@@ -6,7 +6,7 @@
 /*   By: svogrig <svogrig@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:09:10 by svogrig           #+#    #+#             */
-/*   Updated: 2025/05/27 23:56:59 by svogrig          ###   ########.fr       */
+/*   Updated: 2025/05/28 01:19:09 by svogrig          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,27 @@ void displayPendValue(const std::string & intro, const t_vector & data, const t_
 	std::cout << RESET << std::endl;
 }
 
-void displayVectorByPair(const std::string & intro, const t_vector & vector, size_t element_size)
+const std::string getPairColor(size_t index, size_t element_size, size_t total_size)
 {
-	std::cout << intro;
 	
-	size_t i = 0;
-	bool is_in_pair = false;
-	for (i = 0; i < vector.size(); ++i)
-	{
-		bool start_pair = i % (element_size * 2) == 0;
-		if (start_pair)
-			is_in_pair = vector.size() - i >= (element_size * 2);
-		
-		if (i % element_size == 0)
-		{
-			if (!is_in_pair)
-				std::cout << " " FG_PURPLE;
-			else if (start_pair)
-				std::cout << " " FG_GREEN;
-			else
-				std::cout << FG_YELLOW;
-		}
-		if ((i + 1) % element_size == 0)
-			std::cout << BOLD_ON << vector[i] << BOLD_OFF << ' ';
-		else
-			std::cout << vector[i] << ' ';
-	}	
-	std::cout <<  RESET << std::endl;
+	bool is_in_pair = total_size - index >= (element_size * 2);
+	if (!is_in_pair)
+		return FG_PURPLE;
+
+	bool start_pair = index % (element_size * 2) == 0;
+	if (start_pair)
+		return FG_GREEN;
+	return FG_YELLOW;
+}
+
+bool is_first_in_element(size_t index, size_t element_size)
+{
+	return index % element_size == 0;
+}
+
+bool is_last_in_element(size_t index, size_t element_size)
+{
+	return (index + 1) % element_size == 0;
 }
 
 void displayLevel(size_t element_size)
